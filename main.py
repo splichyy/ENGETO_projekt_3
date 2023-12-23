@@ -33,8 +33,8 @@ def main():
 
 def scraping(url_district, output_file):
     """
-    :param url_district:
-    :param output_file:
+    :param url_district: url from 'https://volby.cz'
+    :param output_file: name of output_file
     """
     response = requests.get(url_district)
     soup_district = BeautifulSoup(response.text, "html.parser")
@@ -45,7 +45,7 @@ def scraping(url_district, output_file):
 
 def scrape_town_number(soup_district):
     """
-    :param soup_district:
+    :param soup_district: created object of type BeautifulSoup
     :return: list of towns numbers
     """
     town_numbers = []
@@ -56,7 +56,7 @@ def scrape_town_number(soup_district):
 
 def scrape_town_name(soup_district):
     """
-    :param soup_district:
+    :param soup_district: created object of type BeautifulSoup
     :return: list of towns names
     """
     town_names = []
@@ -67,7 +67,7 @@ def scrape_town_name(soup_district):
 
 def scrape_district_urls_precincts(soup_district):
     """
-    :param soup_district:
+    :param soup_district: created object of type BeautifulSoup
     :return: lists of voters, envelopes, valid votes, parties and votes for parties in urban precints
     """
     all_td = soup_district.find_all(name="td", class_="center")
@@ -88,7 +88,7 @@ def scrape_district_urls_precincts(soup_district):
 
 def scrape_precincts(precinct_url):
     """
-    :param precinct_url:
+    :param precinct_url: url from 'https://volby.cz'
     :return: returns tallied lists of voters, envelopes, valid votes, parties, and votes for parties in town precints
     """
     precincts_total = []
@@ -115,6 +115,7 @@ def scrape_precincts(precinct_url):
             precinct.append(scrape_votes(soup_precinct))
             precinct.append(scrape_votes_for_parties(soup_precinct))
             precincts_total.append(precinct)
+
     all_voters = 0
     all_envelopes = 0
     all_votes = 0
@@ -130,9 +131,10 @@ def scrape_precincts(precinct_url):
             index += 1
     all_parties = scrape_party_name(soup_precinct)
     return all_voters, all_envelopes, all_votes, all_parties, all_votes_for_parties
+
 def scrape_voters(soup_precinct):
     """
-    :param soup_precinct:
+    :param soup_precinct: created object of type BeautifulSoup
     :return: returns possible voters as an integer
     """
     voters = soup_precinct.find(name="td", class_="cislo", headers="sa2")
@@ -140,7 +142,7 @@ def scrape_voters(soup_precinct):
 
 def scrape_envelopes(soup_precinct):
     """
-    :param soup_precinct:
+    :param soup_precinct: created object of type BeautifulSoup
     :return: returns issued envelopes as an integer
     """
     envelopes = soup_precinct.find(name="td", class_="cislo", headers="sa3")
@@ -148,7 +150,7 @@ def scrape_envelopes(soup_precinct):
 
 def scrape_votes(soup_precinct):
     """
-    :param soup_precinct:
+    :param soup_precinct: created object of type BeautifulSoup
     :return: returns valid votes as an integer
     """
     vote = soup_precinct.find(name="td", class_="cislo", headers="sa6")
@@ -156,7 +158,7 @@ def scrape_votes(soup_precinct):
 
 def scrape_party_name(soup_precinct):
     """
-    :param soup_precinct:
+    :param soup_precinct: created object of type BeautifulSoup
     :return: list of parties names
     """
     parties_names = []
@@ -170,7 +172,7 @@ def scrape_party_name(soup_precinct):
 
 def scrape_votes_for_parties(soup_precinct):
     """
-    :param soup_precinct:
+    :param soup_precinct: created object of type BeautifulSoup
     :return: list of votes for parties
     """
     parties_votes = []
